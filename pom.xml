@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>protobuf-blogpost</groupId>
+  <artifactId>protobuf-blogpost-2</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+
+    <protobuf.version>3.5.1</protobuf.version>
+    <protoc-jar-maven-plugin.version>3.5.1.1</protoc-jar-maven-plugin.version>
+    <junit.version>4.12</junit.version>
+    <immutables.version>2.5.6</immutables.version>
+  </properties>
+
+
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/protobuf</directory>
+      </resource>
+    </resources>
+
+    <plugins>
+      <!-- protobuf code generator plugin :
+          See:
+           - https://github.com/os72/protoc-jar-maven-plugin
+           - http://os72.github.io/protoc-jar-maven-plugin/run-mojo.html
+          proto IDL files are located by convention in src/main/protobuf-->
+      <plugin>
+        <groupId>com.github.os72</groupId>
+        <artifactId>protoc-jar-maven-plugin</artifactId>
+        <version>${protoc-jar-maven-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>generate-protobuf</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <protocArtifact>com.google.protobuf:protoc:${protobuf.version}</protocArtifact>
+              <!-- this is required for using the standard protobuf types like Any / Timestamp -->
+              <includeStdTypes>true</includeStdTypes>
+              <outputDirectory>target/generated-sources/protobuf</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.google.protobuf</groupId>
+      <artifactId>protobuf-java</artifactId>
+      <version>${protobuf.version}</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.immutables</groupId>
+      <artifactId>value</artifactId>
+      <version>${immutables.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+</project>
