@@ -1,16 +1,20 @@
-package com.rotomer.simplevm;
+package com.rotomer.simplevm.aggregates.vm.model;
 
 import com.rotomer.simplevm.messages.Region;
 import com.rotomer.simplevm.messages.VmSpec;
 import org.immutables.value.Value;
 
+import static com.rotomer.simplevm.aggregates.vm.model.VmState.Running;
+import static com.rotomer.simplevm.utils.IdGenerator.nextId;
+
 @Value.Immutable
 public abstract class Vm {
-    static Vm create(final String id, final VmSpec vmSpec, final Region region) {
+    public static Vm create(final VmSpec vmSpec, final Region region) {
         return ImmutableVm.builder()
-                .id(id)
+                .id(nextId())
                 .vmSpec(vmSpec)
                 .region(region)
+                .state(Running)
                 .build();
     }
 
@@ -19,4 +23,6 @@ public abstract class Vm {
     public abstract VmSpec vmSpec();
 
     public abstract Region region();
+
+    public abstract VmState state();
 }

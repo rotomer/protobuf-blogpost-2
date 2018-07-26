@@ -5,20 +5,15 @@ option java_package = "com.rotomer.simplevm.messages";
 
 package rotomer.simplevm.messages;
 
+import "common.proto";
+
 message ProvisionVmCommand {
     string id = 1;
     Region region = 2;
     VmSpec vm_spec = 3;
 }
 
-enum Region {
-    UN_INITIALIZED_REGION = 0;
-    US = 1;
-    Europe = 2;
-    Asia = 3;
-}
-
-message VmSpec {
-    int32 cpu_cores = 1;
-    int32 gb_ram = 2;
+message VmProvisionedEvent {
+    ProvisionVmCommand command = 1;
+    string vm_id = 2;
 }
