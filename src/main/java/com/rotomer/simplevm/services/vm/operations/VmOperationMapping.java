@@ -1,8 +1,8 @@
-package com.rotomer.simplevm.aggregates.vm.operations;
+package com.rotomer.simplevm.services.vm.operations;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.rotomer.simplevm.aggregates.Operation;
+import com.rotomer.simplevm.services.Operation;
 import io.vavr.collection.HashMap;
 import io.vavr.collection.Map;
 

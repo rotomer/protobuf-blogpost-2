@@ -1,4 +1,4 @@
-package com.rotomer.simplevm.aggregates.vm.model;
+package com.rotomer.simplevm.services.vm.model;
 
 public enum VmState {
     Running,

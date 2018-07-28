@@ -1,7 +1,7 @@
 package com.rotomer.simplevm.sqs;
 
 import com.google.inject.Inject;
-import com.rotomer.simplevm.aggregates.Aggregate;
+import com.rotomer.simplevm.services.Service;
 import io.vavr.collection.List;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
 import software.amazon.awssdk.services.sqs.SQSClient;
@@ -16,7 +16,7 @@ public class SqsListener implements AutoCloseable {
 
     private final SQSClient _sqsClient;
     private final ListenerSettings _listenerSettings;
-    private final Aggregate _aggregate;
+    private final Service _service;
 
     private volatile boolean _stopFlag = false;
 
@@ -24,10 +24,10 @@ public class SqsListener implements AutoCloseable {
     public SqsListener(final SqsSettings sqsSettings,
                        final AwsCredentialsProvider awsCredentialsProvider,
                        final ListenerSettings listenerSettings,
-                       final Aggregate aggregate) {
+                       final Service service) {
         _sqsClient = createSqsClient(sqsSettings, awsCredentialsProvider);
         _listenerSettings = listenerSettings;
-        _aggregate = aggregate;
+        _service = service;
     }
 
     public void start() {
@@ -67,7 +67,7 @@ public class SqsListener implements AutoCloseable {
     }
 
     private void processMessage(final Message sqsMessage) {
-        _aggregate.processMessage(sqsMessage.body());
+        _service.processMessage(sqsMessage.body());
         deleteMessage(sqsMessage);
     }
 

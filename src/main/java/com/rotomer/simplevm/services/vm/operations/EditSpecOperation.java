@@ -1,11 +1,11 @@
-package com.rotomer.simplevm.aggregates.vm.operations;
+package com.rotomer.simplevm.services.vm.operations;
 
 import com.google.inject.Inject;
-import com.rotomer.simplevm.aggregates.AbstractOperation;
-import com.rotomer.simplevm.aggregates.ResponseSettings;
 import com.rotomer.simplevm.hypervisor.Hypervisor;
 import com.rotomer.simplevm.messages.EditSpecCommand;
 import com.rotomer.simplevm.messages.SpecEditedEvent;
+import com.rotomer.simplevm.services.AbstractOperation;
+import com.rotomer.simplevm.services.ResponseSettings;
 import com.rotomer.simplevm.sqs.SqsSender;
 
 public class EditSpecOperation extends AbstractOperation<EditSpecCommand, SpecEditedEvent> {

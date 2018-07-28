@@ -1,9 +1,9 @@
 package com.rotomer.simplevm.hypervisor;
 
-import com.rotomer.simplevm.aggregates.vm.model.Vm;
-import com.rotomer.simplevm.aggregates.vm.model.VmState;
 import com.rotomer.simplevm.messages.Region;
 import com.rotomer.simplevm.messages.VmSpec;
+import com.rotomer.simplevm.services.vm.model.Vm;
+import com.rotomer.simplevm.services.vm.model.VmState;
 
 public class Hypervisor {
 

@@ -3,11 +3,11 @@ package com.rotomer.simplevm.operations.provision;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.protobuf.Any;
-import com.rotomer.simplevm.aggregates.vm.di.VmAggregateModule;
-import com.rotomer.simplevm.aggregates.vm.operations.EditSpecOperation;
-import com.rotomer.simplevm.aggregates.vm.operations.ProvisionVmOperation;
-import com.rotomer.simplevm.aggregates.vm.operations.StopVmOperation;
 import com.rotomer.simplevm.messages.*;
+import com.rotomer.simplevm.services.vm.di.VmServiceModule;
+import com.rotomer.simplevm.services.vm.operations.EditSpecOperation;
+import com.rotomer.simplevm.services.vm.operations.ProvisionVmOperation;
+import com.rotomer.simplevm.services.vm.operations.StopVmOperation;
 import com.rotomer.simplevm.sqs.SqsListener;
 import com.rotomer.simplevm.sqs.SqsSender;
 import com.rotomer.simplevm.sqs.SqsSettings;
@@ -25,11 +25,11 @@ import static com.rotomer.simplevm.utils.ProtobufUnpacker.unpack;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
 import static org.junit.Assert.assertEquals;
 
-public class VmAggregateFunctionalTest {
+public class VmServiceFunctionalTest {
 
     private final static Config _config = ConfigFactory.parseString(
             "simplevm {\n" +
-                    "vm-aggregate {\n" +
+                    "vm-service {\n" +
                     "sqs {\n" +
                     "sqs-aws-service-endpoint = " + "\"" + SQS_AWS_SERVICE_ENDPOINT + "\"\n" +
                     "aws-region = " + AWS_REGION + "\n" +
@@ -54,7 +54,7 @@ public class VmAggregateFunctionalTest {
         _embeddedSqsTestFixture = new EmbeddedSqsTestFixture();
         _embeddedSqsTestFixture.start();
 
-        final SqsSettings sqsSettings = SqsSettings.fromConfig(_config.getConfig("simplevm.vm-aggregate.sqs"));
+        final SqsSettings sqsSettings = SqsSettings.fromConfig(_config.getConfig("simplevm.vm-service.sqs"));
         _sqsSender = new SqsSender(sqsSettings, AWS_CREDENTIALS_PROVIDER);
         _sqsMessageReceiver = new SqsMessageReceiver(sqsSettings, AWS_CREDENTIALS_PROVIDER);
 
@@ -67,7 +67,7 @@ public class VmAggregateFunctionalTest {
     }
 
     private static SqsListener startUnitUnderTest() {
-        final Injector injector = Guice.createInjector(new VmAggregateModule(_config, AWS_CREDENTIALS_PROVIDER));
+        final Injector injector = Guice.createInjector(new VmServiceModule(_config, AWS_CREDENTIALS_PROVIDER));
         _unitUnderTest = injector.getInstance(SqsListener.class);
 
         newSingleThreadExecutor().submit(_unitUnderTest::start);

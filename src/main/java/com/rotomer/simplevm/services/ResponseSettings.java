@@ -1,4 +1,4 @@
-package com.rotomer.simplevm.aggregates;
+package com.rotomer.simplevm.services;
 
 import com.typesafe.config.Config;
 import org.immutables.value.Value;
