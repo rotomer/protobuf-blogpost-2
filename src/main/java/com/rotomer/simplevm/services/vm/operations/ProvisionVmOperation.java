@@ -15,8 +15,6 @@ import static com.rotomer.simplevm.utils.ResponseWrapper.wrapResponseMessage;
 
 public class ProvisionVmOperation implements Operation {
 
-    public static final String OPERATION_NAME = "ProvisionVmOperation";
-
     private final Hypervisor _hypervisor;
     private final SqsSender _sqsSender;
     private final ResponseSettings _responseSettings;

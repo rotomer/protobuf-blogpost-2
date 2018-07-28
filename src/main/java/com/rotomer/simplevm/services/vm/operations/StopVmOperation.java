@@ -12,8 +12,6 @@ import static com.rotomer.simplevm.services.vm.model.VmState.Stopped;
 
 public class StopVmOperation extends AbstractOperation<StopVmCommand, VmStoppedEvent> {
 
-    public static final String OPERATION_NAME = "StopVmOperation";
-
     private final Hypervisor _hypervisor;
 
     @Inject

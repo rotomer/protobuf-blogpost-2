@@ -22,7 +22,7 @@ public class VmService implements Service {
         final VmCommandEnvelope vmCommandEnvelope = decodeMessageBase64(sqsMessageBody, VmCommandEnvelope.newBuilder())
                 .build();
 
-        final Operation operation = _vmOperationMapping.getByName(vmCommandEnvelope.getDestinationOperation());
+        final Operation operation = _vmOperationMapping.getByName(vmCommandEnvelope.getInnerMessage());
 
         operation.processCommand(vmCommandEnvelope.getInnerMessage());
     }

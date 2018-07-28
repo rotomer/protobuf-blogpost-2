@@ -5,9 +5,6 @@ import com.google.inject.Injector;
 import com.google.protobuf.Any;
 import com.rotomer.simplevm.messages.*;
 import com.rotomer.simplevm.services.vm.di.VmServiceModule;
-import com.rotomer.simplevm.services.vm.operations.EditSpecOperation;
-import com.rotomer.simplevm.services.vm.operations.ProvisionVmOperation;
-import com.rotomer.simplevm.services.vm.operations.StopVmOperation;
 import com.rotomer.simplevm.sqs.SqsListener;
 import com.rotomer.simplevm.sqs.SqsSender;
 import com.rotomer.simplevm.sqs.SqsSettings;
@@ -89,7 +86,6 @@ public class VmServiceFunctionalTest {
         final VmCommandEnvelope envelope = VmCommandEnvelope.newBuilder()
                 .setInnerMessage(anyMessage)
                 .setVmId(provisionVmCommand.getId())
-                .setDestinationOperation(ProvisionVmOperation.OPERATION_NAME)
                 .build();
         final String encodedCommand = encodeMessageBase64(envelope);
 
@@ -118,7 +114,6 @@ public class VmServiceFunctionalTest {
         final VmCommandEnvelope envelope = VmCommandEnvelope.newBuilder()
                 .setInnerMessage(anyMessage)
                 .setVmId(editSpecCommand.getId())
-                .setDestinationOperation(EditSpecOperation.OPERATION_NAME)
                 .build();
         final String encodedCommand = encodeMessageBase64(envelope);
 
@@ -144,7 +139,6 @@ public class VmServiceFunctionalTest {
         final VmCommandEnvelope envelope = VmCommandEnvelope.newBuilder()
                 .setInnerMessage(anyMessage)
                 .setVmId(stopVmCommand.getId())
-                .setDestinationOperation(StopVmOperation.OPERATION_NAME)
                 .build();
         final String encodedCommand = encodeMessageBase64(envelope);
 

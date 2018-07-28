@@ -9,6 +9,5 @@ package rotomer.simplevm.messages;
 
 message VmCommandEnvelope {
     google.protobuf.Any inner_message = 1;
-    string destination_operation = 2;
     string vm_id = 3;
 }

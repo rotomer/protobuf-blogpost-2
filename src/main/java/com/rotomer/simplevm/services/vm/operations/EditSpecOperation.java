@@ -10,8 +10,6 @@ import com.rotomer.simplevm.sqs.SqsSender;
 
 public class EditSpecOperation extends AbstractOperation<EditSpecCommand, SpecEditedEvent> {
 
-    public static final String OPERATION_NAME = "EditSpecOperation";
-
     private final Hypervisor _hypervisor;
 
     @Inject
