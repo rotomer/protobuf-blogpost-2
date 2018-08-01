@@ -3,6 +3,7 @@ package com.rotomer.simplevm.operations.provision;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.protobuf.Any;
+import com.google.protobuf.InvalidProtocolBufferException;
 import com.rotomer.simplevm.messages.*;
 import com.rotomer.simplevm.services.vm.di.VmServiceModule;
 import com.rotomer.simplevm.sqs.SqsListener;
@@ -18,7 +19,6 @@ import static com.rotomer.simplevm.operations.provision.EmbeddedSqsTestFixture.*
 import static com.rotomer.simplevm.utils.IdGenerator.nextId;
 import static com.rotomer.simplevm.utils.ProtobufEncoderDecoder.decodeMessageBase64;
 import static com.rotomer.simplevm.utils.ProtobufEncoderDecoder.encodeMessageBase64;
-import static com.rotomer.simplevm.utils.ProtobufUnpacker.unpack;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
 import static org.junit.Assert.assertEquals;
 
@@ -73,7 +73,7 @@ public class VmServiceFunctionalTest {
     }
 
     @Test
-    public void testProvisionVm() {
+    public void testProvisionVm() throws InvalidProtocolBufferException {
         // arrange:
         final ProvisionVmCommand provisionVmCommand = ProvisionVmCommand.newBuilder()
                 .setId(nextId())
@@ -96,12 +96,12 @@ public class VmServiceFunctionalTest {
         // assert:
         final Any anyResponseMessage = decodeMessageBase64(encodedResponse, Any.newBuilder())
                 .build();
-        final VmProvisionedEvent actualResponse = unpack(anyResponseMessage, VmProvisionedEvent.class);
+        final VmProvisionedEvent actualResponse = anyResponseMessage.unpack(VmProvisionedEvent.class);
         assertEquals(provisionVmCommand, actualResponse.getCommand());
     }
 
     @Test
-    public void testEditSpec() {
+    public void testEditSpec() throws InvalidProtocolBufferException {
         // arrange:
         final EditSpecCommand editSpecCommand = EditSpecCommand.newBuilder()
                 .setId(nextId())
@@ -124,12 +124,12 @@ public class VmServiceFunctionalTest {
         // assert:
         final Any anyResponseMessage = decodeMessageBase64(encodedResponse, Any.newBuilder())
                 .build();
-        final SpecEditedEvent actualResponse = unpack(anyResponseMessage, SpecEditedEvent.class);
+        final SpecEditedEvent actualResponse = anyResponseMessage.unpack(SpecEditedEvent.class);
         assertEquals(editSpecCommand, actualResponse.getCommand());
     }
 
     @Test
-    public void testStopVm() {
+    public void testStopVm() throws InvalidProtocolBufferException {
         // arrange:
         final StopVmCommand stopVmCommand = StopVmCommand.newBuilder()
                 .setId(nextId())
@@ -150,7 +150,7 @@ public class VmServiceFunctionalTest {
         // assert:
         final Any anyResponseMessage = decodeMessageBase64(encodedResponse, Any.newBuilder())
                 .build();
-        final VmStoppedEvent actualResponse = unpack(anyResponseMessage, VmStoppedEvent.class);
+        final VmStoppedEvent actualResponse = anyResponseMessage.unpack(VmStoppedEvent.class);
         assertEquals(stopVmCommand, actualResponse.getCommand());
     }
 }

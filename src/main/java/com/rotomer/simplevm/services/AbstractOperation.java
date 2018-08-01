@@ -1,29 +1,22 @@
 package com.rotomer.simplevm.services;
 
-import com.google.protobuf.Any;
 import com.google.protobuf.Message;
 import com.rotomer.simplevm.sqs.SqsSender;
 
-import static com.rotomer.simplevm.utils.ProtobufUnpacker.unpack;
 import static com.rotomer.simplevm.utils.ResponseWrapper.wrapResponseMessage;
 
-public abstract class AbstractOperation<C extends Message, E extends Message> implements Operation {
-    private final Class<C> _commandClass;
+public abstract class AbstractOperation<C extends Message, E extends Message> implements Operation<C> {
     private final SqsSender _sqsSender;
     private final ResponseSettings _responseSettings;
 
-    protected AbstractOperation(final Class<C> commandClass,
-                                final SqsSender sqsSender,
+    protected AbstractOperation(final SqsSender sqsSender,
                                 final ResponseSettings responseSettings) {
-        _commandClass = commandClass;
         _sqsSender = sqsSender;
         _responseSettings = responseSettings;
     }
 
     @Override
-    public void processCommand(final Any anyCommand) {
-        final C command = unpack(anyCommand, _commandClass);
-
+    public void processCommand(final C command) {
         final E event = doProcessing(command);
 
         final String encodedEvent = wrapResponseMessage(event);

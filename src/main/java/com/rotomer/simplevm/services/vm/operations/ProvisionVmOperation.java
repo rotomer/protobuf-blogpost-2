@@ -10,10 +10,9 @@ import com.rotomer.simplevm.services.ResponseSettings;
 import com.rotomer.simplevm.services.vm.model.Vm;
 import com.rotomer.simplevm.sqs.SqsSender;
 
-import static com.rotomer.simplevm.utils.ProtobufUnpacker.unpack;
-import static com.rotomer.simplevm.utils.ResponseWrapper.wrapResponseMessage;
+import static com.rotomer.simplevm.utils.ProtobufEncoderDecoder.encodeMessageBase64;
 
-public class ProvisionVmOperation implements Operation {
+public class ProvisionVmOperation implements Operation<ProvisionVmCommand> {
 
     private final Hypervisor _hypervisor;
     private final SqsSender _sqsSender;
@@ -29,16 +28,16 @@ public class ProvisionVmOperation implements Operation {
     }
 
     @Override
-    public void processCommand(final Any anyCommand) {
+    public void processCommand(final ProvisionVmCommand command) {
         // Note: This implementation contains some boilerplate that can be extracted as can be seen in the
         // implementations of StopVmOperation and EditSpecOperation.
         // This implementation has been made concrete in order to serve as a concrete example in the blog post.
 
-        final ProvisionVmCommand command = unpack(anyCommand, ProvisionVmCommand.class);
-
         final VmProvisionedEvent event = provisionVm(command);
 
-        final String encodedEvent = wrapResponseMessage(event);
+        final Any wrappedEvent = Any.pack(event);
+        final String encodedEvent = encodeMessageBase64(wrappedEvent);
+
         _sqsSender.sendMessage(_responseSettings.queueUrl(), encodedEvent);
     }
 

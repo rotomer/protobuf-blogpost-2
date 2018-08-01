@@ -18,7 +18,7 @@ public class StopVmOperation extends AbstractOperation<StopVmCommand, VmStoppedE
     public StopVmOperation(final Hypervisor hypervisor,
                            final SqsSender sqsSender,
                            final ResponseSettings responseSettings) {
-        super(StopVmCommand.class, sqsSender, responseSettings);
+        super(sqsSender, responseSettings);
         _hypervisor = hypervisor;
     }
 

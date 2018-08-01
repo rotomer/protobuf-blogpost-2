@@ -16,7 +16,7 @@ public class EditSpecOperation extends AbstractOperation<EditSpecCommand, SpecEd
     public EditSpecOperation(final Hypervisor hypervisor,
                              final SqsSender sqsSender,
                              final ResponseSettings responseSettings) {
-        super(EditSpecCommand.class, sqsSender, responseSettings);
+        super(sqsSender, responseSettings);
         _hypervisor = hypervisor;
     }
 
